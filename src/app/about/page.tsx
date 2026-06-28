@@ -212,8 +212,8 @@ Anand Charitable Trust started in the year 2018 with some like-minded people to 
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {[
               ["2018", "Founded"],
-              ["12+", "Programmes"],
-              ["100+", "People Reached"],
+              ["20+", "Programmes"],
+              ["500+", "People Reached"],
               ["Odisha", "Community"],
             ].map(([value, label]) => (
               <div

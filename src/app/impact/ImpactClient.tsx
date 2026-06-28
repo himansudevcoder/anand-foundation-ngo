@@ -162,22 +162,22 @@ const audited = [
   },
 
   {
-    v: "12+",
+    v: "20+",
 
     l: "Programmes & activities",
   },
 
   {
-    v: "100+",
+    v: "500+",
 
     l: "Children & youth engaged",
   },
 
-  {
-    v: "50+",
+  // {
+  //   v: "50+",
 
-    l: "Women supported",
-  },
+  //   l: "Women supported",
+  // },
 
   {
     v: "2020",
@@ -364,129 +364,6 @@ Through education, training, community engagement and social initiatives, Anand 
                 </article>
               </Reveal>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* COMMUNITY VOICE */}
-      <section
-        className="
-          bg-sage/10
-          px-6
-          py-24
-          lg:px-8
-        "
-      >
-        <div className="mx-auto max-w-7xl">
-          <div
-            className="
-              grid
-              items-center
-              gap-12
-              lg:grid-cols-12
-            "
-          >
-            {/* IMAGE */}
-            <Reveal className="lg:col-span-5">
-              <div className="relative">
-                <Image
-                  src={hero}
-                  alt="Community member participating in Anand Charitable Trust programme"
-                  width={1200}
-                  height={1500}
-                  className="
-                    aspect-[4/5]
-                    w-full
-                    rounded-sm
-                    object-cover
-                    shadow-xl
-                  "
-                />
-
-                <div
-                  className="
-                    absolute
-                    -bottom-6
-                    right-6
-                    max-w-[260px]
-                    rounded-sm
-                    bg-accent
-                    px-7
-                    py-5
-                    text-white
-                    shadow-xl
-                  "
-                >
-                  <p
-                    className="
-                      font-serif
-                      text-xl
-                      italic
-                      leading-snug
-                    "
-                  >
-                    “Education and support gave us confidence to dream bigger.”
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* CONTENT */}
-            <Reveal delay={0.08} className="lg:col-span-7">
-              <SectionEyebrow>Stories from our community</SectionEyebrow>
-
-              <h2
-                className="
-                  mb-8
-                  font-serif
-                  text-4xl
-                  leading-tight
-                  text-brand
-                  md:text-6xl
-                "
-              >
-                Real people.
-                <br />
-                Real change.
-              </h2>
-
-              <blockquote
-                className="
-                  mb-8
-                  text-xl
-                  leading-relaxed
-                  text-brand/80
-                  md:text-2xl
-                "
-              >
-                “Through training, education and community support, Anand
-                Charitable Trust has created opportunities for children, women
-                and youth to learn, grow and move forward with confidence.”
-              </blockquote>
-
-              <div className="space-y-2">
-                <p
-                  className="
-                    font-serif
-                    text-2xl
-                    text-brand
-                  "
-                >
-                  Mrs. Madhusmita Das
-                </p>
-
-                <p
-                  className="
-                    text-sm
-                    uppercase
-                    tracking-[0.18em]
-                    text-accent
-                  "
-                >
-                  Centre Head
-                </p>
-              </div>
-            </Reveal>
           </div>
         </div>
       </section>

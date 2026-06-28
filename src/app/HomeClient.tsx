@@ -17,7 +17,7 @@ import leadership from "@/assets/leadership.jpeg";
 import sketching from "@/assets/sketching-class.jpeg";
 import youthmeeting from "@/assets/youthmeeting.jpeg";
 import womensmeeting from "@/assets/womens-meeting.jpeg";
-import hero from "@/assets/hero-image.jpeg";
+import hero from "@/assets/heroImg.png";
 
 import gallery1 from "@/assets/children.jpeg";
 import gallery3 from "@/assets/youthmeeting.jpeg";
@@ -47,12 +47,12 @@ const stats = [
   },
 
   {
-    value: "12+",
+    value: "20+",
     label: "Community programmes conducted",
   },
 
   {
-    value: "100+",
+    value: "500+",
     label: "Children, women & youth supported",
   },
 
@@ -108,7 +108,7 @@ const programmes = [
   {
     img: computer,
     icon: Droplets,
-    title: "Computer & Leadership Training",
+    title: "Computer Training",
     desc: "Equipping youth with digital literacy, confidence and leadership skills.",
   },
 
@@ -316,81 +316,81 @@ export default function HomeClient() {
 
       <section className="bg-sage/10 px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-12">
-            <Reveal className="lg:col-span-5">
-              <div className="relative">
-                <Image
-                  src={hero}
-                  alt="Community member participating in Anand Charitable Trust programme"
-                  width={1200}
-                  height={1500}
-                  className="aspect-[4/5] w-full rounded-sm object-cover shadow-xl"
-                />
+          <Reveal>
+            <SectionEyebrow>Stories from our community</SectionEyebrow>
+          </Reveal>
 
-                <div className="absolute -bottom-6 right-6 max-w-[260px] rounded-sm bg-accent px-7 py-5 text-white shadow-xl">
-                  <p className="font-serif text-xl italic leading-snug">
-                    “Education and support gave us confidence to dream bigger.”
-                  </p>
-                </div>
-              </div>
-            </Reveal>
+          <Swiper
+            modules={[Pagination, Autoplay]}
+            slidesPerView={1}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            loop
+            className="w-full pb-14 pt-8 md:pb-16"
+          >
+            {stories.map((s) => (
+              <SwiperSlide key={s.quote}>
+                <div className="grid items-center gap-12 lg:grid-cols-12">
+                  <div className="lg:col-span-5">
+                    <div className="relative">
+                      <Image
+                        src={s.img}
+                        alt={s.name}
+                        width={1200}
+                        height={1500}
+                        className="aspect-[4/5] w-full rounded-sm object-cover shadow-xl"
+                      />
 
-            <Reveal delay={0.08} className="min-w-0 lg:col-span-7">
-              <SectionEyebrow>Stories from our community</SectionEyebrow>
+                      {/* <div className="absolute -bottom-6 right-6 max-w-[260px] rounded-sm bg-accent px-7 py-5 text-white shadow-xl">
+                        <p className="font-serif text-xl italic leading-snug">
+                          “{s.role}”
+                        </p>
+                      </div> */}
+                    </div>
+                  </div>
 
-              <Swiper
-                modules={[Pagination, Autoplay]}
-                slidesPerView={1}
-                autoplay={{
-                  delay: 5000,
-                  disableOnInteraction: false,
-                }}
-                pagination={{
-                  clickable: true,
-                }}
-                loop
-                className="w-full pb-12 md:pb-16"
-              >
-                {stories.map((s) => (
-                  <SwiperSlide key={s.quote}>
-                    <div className="pb-4 pt-2">
-                      <h2 className="mb-6 font-serif text-3xl leading-[1.08] text-brand sm:text-4xl md:mb-8 md:text-5xl lg:text-6xl">
-                        Real people.
-                        <br />
-                        Real change.
-                      </h2>
+                  <div className="min-w-0 lg:col-span-7">
+                    <h2 className="mb-6 font-serif text-3xl leading-[1.08] text-brand sm:text-4xl md:mb-8 md:text-5xl lg:text-6xl">
+                      Real people.
+                      <br />
+                      Real change.
+                    </h2>
 
-                      <blockquote className="mb-8 max-w-[34ch] text-base leading-relaxed text-brand/80 sm:text-lg md:mb-10 md:text-xl lg:text-2xl">
-                        “{s.quote}”
-                      </blockquote>
+                    <blockquote className="mb-8 max-w-[34ch] text-base leading-relaxed text-brand/80 sm:text-lg md:mb-10 md:text-xl lg:text-2xl">
+                      “{s.quote}”
+                    </blockquote>
 
-                      <div className="flex items-center gap-4">
-                        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-brand/10 sm:h-16 sm:w-16">
-                          <Image
-                            src={s.img}
-                            alt={s.name}
-                            width={100}
-                            height={100}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
+                    <div className="flex items-center gap-4">
+                      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-brand/10 sm:h-16 sm:w-16">
+                        <Image
+                          src={s.img}
+                          alt={s.name}
+                          width={100}
+                          height={100}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
 
-                        <div className="min-w-0">
-                          <p className="truncate font-serif text-lg text-brand sm:text-xl md:text-2xl">
-                            {s.name}
-                          </p>
+                      <div className="min-w-0">
+                        <p className="truncate font-serif text-lg text-brand sm:text-xl md:text-2xl">
+                          {s.name}
+                        </p>
 
-                          <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-accent sm:text-xs">
-                            {s.role}
-                          </p>
-                        </div>
+                        <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-accent sm:text-xs">
+                          {s.role}
+                        </p>
                       </div>
                     </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </Reveal>
-          </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </section>
 
