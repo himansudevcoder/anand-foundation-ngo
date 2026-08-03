@@ -27,21 +27,21 @@ export function HomeHeroImage({ hero }: HomeHeroImageProps) {
         priority
       />
 
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
           delay: 0.5,
           duration: 0.7,
         }}
-        className="absolute -bottom-12 -left-6 md:-left-12 bg-white p-7 rounded-sm shadow-2xl max-w-[15rem]"
+        className="absolute -bottom-30 -left-6 md:-left-12 bg-white p-7 rounded-sm shadow-2xl max-w-[15rem]"
       >
         <p className="text-3xl font-serif text-accent mb-1">12+</p>
 
         <p className="text-xs text-brand/60 uppercase tracking-wide leading-tight">
           Community programmes supporting children, women & youth.
         </p>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 }

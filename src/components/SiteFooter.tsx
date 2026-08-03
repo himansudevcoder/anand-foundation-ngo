@@ -81,10 +81,10 @@ export function SiteFooter() {
               </div>
 
               <a
-                href="mailto:anandcharitabletrust@gmail.com"
+                href="mailto:anandcharitabletrust22@gmail.com"
                 className="text-sm text-surface/75 transition hover:text-accent"
               >
-                anandcharitabletrust@gmail.com
+                anandcharitabletrust22@gmail.com
               </a>
             </div>
           </div>
@@ -102,16 +102,16 @@ export function SiteFooter() {
                 rel="noopener noreferrer"
                 className="transition hover:text-accent"
               >
-                <Facebook size={18} />
+                <Facebook size={50} />
               </a>
 
-              <a href="#" className="transition hover:text-accent">
+              {/* <a href="#" className="transition hover:text-accent">
                 <Instagram size={18} />
               </a>
 
               <a href="#" className="transition hover:text-accent">
                 <Youtube size={18} />
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -121,22 +121,15 @@ export function SiteFooter() {
               Support Our Mission
             </p>
 
-            <div className="w-[180px] rounded-[1.75rem] border border-surface/10 bg-white/5 p-4 backdrop-blur-sm">
-              <div className="grid aspect-square place-items-center rounded-2xl border border-white/10 bg-white/5">
-                <div className="px-4 text-center">
-                  <div className="mb-3 text-4xl">❤️</div>
-
-                  <p className="text-sm font-medium text-surface">
-                    Donation QR
-                  </p>
-
-                  <p className="mt-1 text-xs text-surface/50">Coming Soon</p>
-                </div>
-              </div>
-
-              <p className="mt-3 text-center text-[11px] text-surface/45">
-                Secure donation support will be available soon
-              </p>
+            <div className="w-56 rounded-sm border border-white/10 bg-white/5 p-3">
+              <Image
+                src="/images/qrcode.png"
+                alt="Donation QR Code"
+                width={300}
+                height={300}
+                className="w-full rounded-xs object-contain"
+                priority
+              />
             </div>
           </div>
         </div>

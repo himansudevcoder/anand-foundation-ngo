@@ -72,7 +72,7 @@ export default function VolunteerPage() {
     <>
       <PageHeader
         eyebrow="Get Involved"
-        image="/images/children-club-summer-camp/image2.jpeg"
+        // image="/images/children-club-summer-camp/image2.jpeg"
         title={
           <>
             Create <span className="italic text-accent">meaningful</span>{" "}

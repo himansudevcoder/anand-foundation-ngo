@@ -20,6 +20,7 @@ import womensmeeting from "@/assets/womens-meeting.jpeg";
 import hero from "@/assets/heroImg.png";
 
 import gallery1 from "@/assets/children.jpeg";
+import centrehead from "@/assets/centrehead.jpeg";
 import gallery3 from "@/assets/youthmeeting.jpeg";
 
 import { HomeHeroImage } from "@/components/HomeHeroImage";
@@ -64,7 +65,7 @@ const stats = [
 
 const stories = [
   {
-    img: gallery3,
+    img: gallery1,
 
     quote:
       "Through training, education and community support, Anand Charitable Trust has created opportunities for children, women and youth to learn, grow and move forward with confidence.",
@@ -74,27 +75,27 @@ const stories = [
     role: "Centre Head",
   },
 
-  {
-    img: gallery1,
+  // {
+  //   img: gallery1,
 
-    quote:
-      "Community initiatives and learning programmes encouraged confidence, growth and stronger opportunities.",
+  //   quote:
+  //     "Community initiatives and learning programmes encouraged confidence, growth and stronger opportunities.",
 
-    name: "Community Participant",
+  //   name: "Community Participant",
 
-    role: "Leadership Programme",
-  },
+  //   role: "Leadership Programme",
+  // },
 
-  {
-    img: gallery3,
+  // {
+  //   img: gallery3,
 
-    quote:
-      "Support and participation created meaningful change and brought people together.",
+  //   quote:
+  //     "Support and participation created meaningful change and brought people together.",
 
-    name: "Volunteer",
+  //   name: "Volunteer",
 
-    role: "Community Initiative",
-  },
+  //   role: "Community Initiative",
+  // },
 ];
 
 const programmes = [

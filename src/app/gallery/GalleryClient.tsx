@@ -355,7 +355,7 @@ Explore the stories, programmes and community moments that reflect our journey o
         )}
       </AnimatePresence>
 
-      <section className="bg-brand px-6 py-20 text-surface lg:px-8">
+      {/* <section className="bg-brand px-6 py-20 text-surface lg:px-8">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <h2 className="mb-12 font-serif text-3xl md:text-5xl">
@@ -381,7 +381,7 @@ Explore the stories, programmes and community moments that reflect our journey o
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

@@ -266,7 +266,7 @@ export const ngoPhotos = [
 
     photos: [
       {
-        src: "/images/dental-camp-kids/image1.jpeg",
+        src: "/images/dental-camp-kids/image1.png",
         alt: "Dental Camp",
         h: "",
       },
