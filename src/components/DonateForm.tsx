@@ -405,7 +405,7 @@ const NGO_NAME = "Anand Charitable Trust";
 
 // NGO WhatsApp number WITH country code, without +
 // Example: 919438222888
-const WHATSAPP_NUMBER = "919XXXXXXXXX";
+const WHATSAPP_NUMBER = "919861194145";
 
 export function DonateForm() {
   const [amount, setAmount] = useState<number>(1500);
