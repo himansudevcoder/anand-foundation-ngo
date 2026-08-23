@@ -31,10 +31,10 @@ export function SiteFooter() {
             />
 
             <div>
-              <h3 className="font-serif text-3xl text-surface">Anand</h3>
+              <h3 className="font-serif text-3xl text-surface">ANAND</h3>
 
               <p className="text-xs uppercase tracking-[0.25em]">
-                Charitable Trust
+                CHARITABLE TRUST
               </p>
             </div>
           </Link>
@@ -70,7 +70,7 @@ export function SiteFooter() {
               </div>
 
               <span className="text-sm text-surface/75">
-                Anand Charitable Trust
+                ANAND CHARITABLE TRUST
               </span>
             </div>
 
