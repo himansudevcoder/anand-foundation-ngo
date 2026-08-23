@@ -454,7 +454,7 @@ export function DonateForm() {
     `&pn=${encodeURIComponent(NGO_NAME)}` +
     `&am=${encodeURIComponent(amountToUse)}` +
     `&cu=INR` +
-    `&tr=${encodeURIComponent(crypto.randomUUID())}` +
+    `&tr=${encodeURIComponent(crypto.randomUUID().replace(/-/g, ""))}` +
     `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
 
   // NEW: QR code value — regenerates only when the amount changes,
