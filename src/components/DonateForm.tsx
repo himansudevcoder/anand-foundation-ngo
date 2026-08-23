@@ -460,7 +460,7 @@ export function DonateForm() {
   // NEW: QR code value — regenerates only when the amount changes,
   // not on every render (otherwise the tr changes constantly)
   const qrUpiUrl = useMemo(() => {
-    if (!finalAmount || finalAmount < 5) return "";
+    if (!finalAmount || finalAmount <= 1) return "";
     return buildUpiUrl(finalAmount);
   }, [finalAmount]);
 
