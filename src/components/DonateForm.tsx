@@ -401,7 +401,7 @@ import { Loader2 } from "lucide-react";
 const PRESETS = [500, 1500, 5000, 15000] as const;
 
 // IMPORTANT: Replace this with the NGO's actual UPI ID
-const NGO_UPI_ID = "98611941457@ybl";
+const NGO_UPI_ID = "9827852631-2@ybl";
 const NGO_NAME = "Anand Charitable Trust";
 
 // NGO WhatsApp number WITH country code, without +
