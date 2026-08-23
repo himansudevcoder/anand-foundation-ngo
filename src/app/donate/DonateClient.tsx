@@ -32,7 +32,7 @@ Every contribution helps support children, women and communities through educati
 
       {/* SUCCESS */}
 
-      <section className="px-6 py-16 lg:px-8">
+      <section className="px-6 py-1 lg:px-8">
         <div className="mx-auto max-w-3xl">
           {status === "success" && (
             <Reveal>

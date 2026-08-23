@@ -9,7 +9,7 @@ const RAZORPAY_PAGE_URL = "https://rzp.io/rzp/YR208Wh";
 
 export function DonatePage() {
   return (
-    <div className="mx-auto grid max-w-5xl gap-10 px-4 py-16 md:grid-cols-2 md:gap-16 md:py-24">
+    <div className="mx-auto grid max-w-5xl gap-10 px-4 py-0 md:grid-cols-2 md:gap-16 md:py-0">
       {/* LEFT: NGO info */}
       <div className="flex flex-col">
         <span className="mb-8 font-serif text-2xl font-semibold text-brand">
