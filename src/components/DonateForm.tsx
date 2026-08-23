@@ -394,15 +394,16 @@
 
 "use client";
 
-// import { useState, type FormEvent } from "react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Loader2, X } from "lucide-react";
+// import { QRCodeSVG } from "qrcode.react";
+const QR_CODE_IMAGE = "/images/qrcode.png";
 
 const PRESETS = [500, 1500, 5000, 15000] as const;
 
 // IMPORTANT: Replace this with the NGO's actual UPI ID
-const NGO_UPI_ID = "9827852631-2@ybl";
-const NGO_NAME = "urbasi naik";
+const NGO_UPI_ID = "9934319226@ucobank";
+const NGO_NAME = "ANAND CHARITABLE TRUST";
 
 // NGO WhatsApp number WITH country code, without +
 // Example: 919438222888
@@ -415,10 +416,14 @@ export function DonateForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // NEW: controls the "confirm your QR payment" popup
+  const [qrModalOpen, setQrModalOpen] = useState(false);
 
   const waitingForUPIReturn = useRef(false);
 
@@ -431,8 +436,6 @@ export function DonateForm() {
         waitingForUPIReturn.current
       ) {
         waitingForUPIReturn.current = false;
-
-        // User has returned from the UPI app
         setPaymentStarted(true);
       }
     };
@@ -444,29 +447,22 @@ export function DonateForm() {
     };
   }, []);
 
-  // const startUPIPayment = () => {
-  //   setError(null);
+  // Shared UPI URL builder — used by both the button flow and the QR code
+  const buildUpiUrl = (amountToUse: number) =>
+    `upi://pay` +
+    `?pa=${encodeURIComponent(NGO_UPI_ID)}` +
+    `&pn=${encodeURIComponent(NGO_NAME)}` +
+    `&am=${encodeURIComponent(amountToUse)}` +
+    `&cu=INR` +
+    `&tr=${encodeURIComponent(crypto.randomUUID())}` +
+    `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
 
-  //   if (!finalAmount || finalAmount < 50) {
-  //     setError("Minimum donation is ₹50.");
-  //     return;
-  //   }
-
-  //   // UPI payment URL
-  //   const upiUrl =
-  //     `upi://pay` +
-  //     `?pa=${encodeURIComponent(NGO_UPI_ID)}` +
-  //     `&pn=${encodeURIComponent(NGO_NAME)}` +
-  //     `&am=${encodeURIComponent(finalAmount)}` +
-  //     `&cu=INR` +
-  //     `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
-
-  //   // Try opening UPI app
-  //   window.location.href = upiUrl;
-
-  //   // Show donor form after attempting payment
-  //   setPaymentStarted(true);
-  // };
+  // NEW: QR code value — regenerates only when the amount changes,
+  // not on every render (otherwise the tr changes constantly)
+  const qrUpiUrl = useMemo(() => {
+    if (!finalAmount || finalAmount < 5) return "";
+    return buildUpiUrl(finalAmount);
+  }, [finalAmount]);
 
   const startUPIPayment = () => {
     setError(null);
@@ -476,32 +472,20 @@ export function DonateForm() {
       return;
     }
 
-    const upiUrl =
-      `upi://pay` +
-      `?pa=${encodeURIComponent(NGO_UPI_ID)}` +
-      `&pn=${encodeURIComponent(NGO_NAME)}` +
-      `&am=${encodeURIComponent(finalAmount)}` +
-      `&cu=INR` +
-      `&tr=${encodeURIComponent(crypto.randomUUID())}` + // Unique transaction reference
-      `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
+    const upiUrl = buildUpiUrl(finalAmount);
 
-    // We are now waiting for the user to return from UPI app
     waitingForUPIReturn.current = true;
-
-    // Open PhonePe / Google Pay / Paytm / BHIM etc.
     window.location.href = upiUrl;
   };
 
   const submitDonationDetails = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setError(null);
 
     if (!name.trim()) {
       setError("Please enter your name.");
       return;
     }
-
     if (!phone.trim()) {
       setError("Please enter your phone number.");
       return;
@@ -509,7 +493,7 @@ export function DonateForm() {
 
     setLoading(true);
 
-    const message = [
+    const msg = [
       "Donation Details",
       "",
       `Name: ${name.trim()}`,
@@ -522,11 +506,40 @@ export function DonateForm() {
       .filter(Boolean)
       .join("\n");
 
-    const whatsappUrl =
-      `https://wa.me/${WHATSAPP_NUMBER}` +
-      `?text=${encodeURIComponent(message)}`;
+    window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  };
 
-    window.location.href = whatsappUrl;
+  // NEW: submit handler for the QR popup form
+  const submitQrDonationDetails = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!name.trim()) {
+      setError("Please enter your name.");
+      return;
+    }
+    if (!phone.trim()) {
+      setError("Please enter your phone number.");
+      return;
+    }
+
+    setLoading(true);
+
+    const msg = [
+      "Donation Details (Paid via QR)",
+      "",
+      `Name: ${name.trim()}`,
+      `Phone: ${phone.trim()}`,
+      email.trim() ? `Email: ${email.trim()}` : null,
+      `Amount donated: ₹${finalAmount.toLocaleString("en-IN")}`,
+      message.trim() ? `Message: ${message.trim()}` : null,
+      "",
+      "I have scanned the QR code and completed my UPI payment.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
   return (
@@ -539,43 +552,25 @@ export function DonateForm() {
         p-8
         shadow-sm
         md:p-12
+        relative
       "
     >
       {!paymentStarted ? (
         <>
-          <h2
-            className="
-              mb-3
-              text-center
-              font-serif
-              text-3xl
-              text-brand
-              md:text-4xl
-            "
-          >
+          <h2 className="mb-3 text-center font-serif text-3xl text-brand md:text-4xl">
             Fueled by your generosity.
           </h2>
 
-          <p
-            className="
-              mx-auto
-              mb-10
-              max-w-md
-              text-center
-              text-brand/60
-            "
-          >
+          <p className="mx-auto mb-10 max-w-md text-center text-brand/60">
             100% of public donations go directly to project costs.
           </p>
 
           {/* PRESET AMOUNTS */}
           <fieldset className="mb-6">
             <legend className="sr-only">Donation amount in INR</legend>
-
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {PRESETS.map((preset) => {
                 const active = !custom && amount === preset;
-
                 return (
                   <button
                     type="button"
@@ -585,12 +580,7 @@ export function DonateForm() {
                       setCustom("");
                     }}
                     className={`
-                      rounded-xl
-                      border
-                      py-4
-                      text-lg
-                      font-medium
-                      transition-all
+                      rounded-xl border py-4 text-lg font-medium transition-all
                       ${
                         active
                           ? "border-accent bg-accent/5 text-brand"
@@ -609,17 +599,10 @@ export function DonateForm() {
           <div className="mb-6">
             <label
               htmlFor="custom"
-              className="
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.18em]
-                text-brand/50
-              "
+              className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
             >
               Other amount (INR)
             </label>
-
             <input
               id="custom"
               type="number"
@@ -628,16 +611,7 @@ export function DonateForm() {
               value={custom}
               onChange={(e) => setCustom(e.target.value)}
               placeholder="Enter custom amount"
-              className="
-                mt-1
-                w-full
-                border-b
-                border-brand/10
-                bg-surface
-                py-3
-                outline-none
-                focus:border-accent
-              "
+              className="mt-1 w-full border-b border-brand/10 bg-surface py-3 outline-none focus:border-accent"
             />
           </div>
 
@@ -647,24 +621,14 @@ export function DonateForm() {
             </p>
           )}
 
-          {/* UPI PAYMENT */}
+          {/* UPI PAYMENT (app intent) */}
           <button
             type="button"
             onClick={startUPIPayment}
             className="
-              flex
-              w-full
-              items-center
-              justify-center
-              gap-3
-              rounded-full
-              bg-accent
-              py-5
-              text-lg
-              font-semibold
-              text-white
-              transition-colors
-              hover:bg-brand
+              flex w-full items-center justify-center gap-3
+              rounded-full bg-accent py-5 text-lg font-semibold text-white
+              transition-colors hover:bg-brand
             "
           >
             Pay ₹{finalAmount.toLocaleString("en-IN")} via UPI
@@ -673,19 +637,50 @@ export function DonateForm() {
           <p className="mt-4 text-center text-xs text-brand/50">
             Pay securely using PhonePe, Google Pay or another UPI app.
           </p>
+
+          {/* NEW: OR divider */}
+          <div className="my-8 flex items-center gap-4">
+            <div className="h-px flex-1 bg-brand/10" />
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand/40">
+              Or
+            </span>
+            <div className="h-px flex-1 bg-brand/10" />
+          </div>
+
+          {/* NEW: QR CODE PAYMENT */}
+          <div className="flex flex-col items-center">
+            <p className="mb-4 text-center text-sm text-brand/60">
+              Scan with any UPI app to pay ₹
+              {finalAmount.toLocaleString("en-IN")}
+            </p>
+
+            <div className="rounded-2xl border border-brand/10 bg-white p-4">
+              <img
+                src={QR_CODE_IMAGE}
+                alt={`Scan to donate to ${NGO_NAME} via UPI`}
+                width={220}
+                height={220}
+                className="h-[220px] w-[220px] object-contain"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setQrModalOpen(true)}
+              className="
+                mt-6 w-full rounded-full border border-accent
+                py-4 text-base font-semibold text-accent
+                transition-colors hover:bg-accent hover:text-white
+              "
+            >
+              I've paid via QR — send my details
+            </button>
+          </div>
         </>
       ) : (
         <>
-          {/* DONOR DETAILS */}
-          <h2
-            className="
-              mb-3
-              text-center
-              font-serif
-              text-3xl
-              text-brand
-            "
-          >
+          {/* DONOR DETAILS (existing flow for the direct UPI button) */}
+          <h2 className="mb-3 text-center font-serif text-3xl text-brand">
             Donation Details
           </h2>
 
@@ -695,55 +690,30 @@ export function DonateForm() {
           </p>
 
           <form onSubmit={submitDonationDetails}>
-            {/* NAME */}
             <div className="mb-6">
               <label
                 htmlFor="name"
-                className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-brand/50
-                "
+                className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
               >
                 Full name *
               </label>
-
               <input
                 id="name"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={120}
-                className="
-                  mt-1
-                  w-full
-                  border-b
-                  border-brand/10
-                  bg-transparent
-                  py-2
-                  outline-none
-                  focus:border-accent
-                "
+                className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
               />
             </div>
 
-            {/* PHONE */}
             <div className="mb-6">
               <label
                 htmlFor="phone"
-                className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-brand/50
-                "
+                className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
               >
                 Phone number *
               </label>
-
               <input
                 id="phone"
                 required
@@ -751,50 +721,24 @@ export function DonateForm() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 maxLength={20}
-                className="
-                  mt-1
-                  w-full
-                  border-b
-                  border-brand/10
-                  bg-transparent
-                  py-2
-                  outline-none
-                  focus:border-accent
-                "
+                className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
               />
             </div>
 
-            {/* EMAIL */}
             <div className="mb-8">
               <label
                 htmlFor="email"
-                className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-brand/50
-                "
+                className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
               >
                 Email (optional)
               </label>
-
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={200}
-                className="
-                  mt-1
-                  w-full
-                  border-b
-                  border-brand/10
-                  bg-transparent
-                  py-2
-                  outline-none
-                  focus:border-accent
-                "
+                className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
               />
             </div>
 
@@ -808,20 +752,9 @@ export function DonateForm() {
               type="submit"
               disabled={loading}
               className="
-                flex
-                w-full
-                items-center
-                justify-center
-                gap-3
-                rounded-full
-                bg-accent
-                py-5
-                text-lg
-                font-semibold
-                text-white
-                transition-colors
-                hover:bg-brand
-                disabled:opacity-60
+                flex w-full items-center justify-center gap-3
+                rounded-full bg-accent py-5 text-lg font-semibold text-white
+                transition-colors hover:bg-brand disabled:opacity-60
               "
             >
               {loading && <Loader2 className="animate-spin" size={18} />}
@@ -832,17 +765,142 @@ export function DonateForm() {
           <button
             type="button"
             onClick={() => setPaymentStarted(true)}
-            className="
-              mt-4
-              w-full
-              text-sm
-              text-brand/50
-              hover:text-brand
-            "
+            className="mt-4 w-full text-sm text-brand/50 hover:text-brand"
           >
             ← Change donation amount
           </button>
         </>
+      )}
+
+      {/* NEW: QR PAYMENT CONFIRMATION POPUP */}
+      {qrModalOpen && (
+        <div
+          className="
+            fixed inset-0 z-50 flex items-center justify-center
+            bg-black/50 p-4
+          "
+          onClick={() => setQrModalOpen(false)}
+        >
+          <div
+            className="
+              relative w-full max-w-md rounded-[2rem] bg-white p-8
+              shadow-xl
+            "
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setQrModalOpen(false)}
+              className="absolute right-5 top-5 text-brand/40 hover:text-brand"
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+
+            <h3 className="mb-2 text-center font-serif text-2xl text-brand">
+              Thank you! 🙏
+            </h3>
+
+            <p className="mb-6 text-center text-sm text-brand/60">
+              Please share your details on WhatsApp so we can confirm and thank
+              you personally for your support.
+            </p>
+
+            <form onSubmit={submitQrDonationDetails}>
+              <div className="mb-5">
+                <label
+                  htmlFor="qr-name"
+                  className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
+                >
+                  Full name *
+                </label>
+                <input
+                  id="qr-name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={120}
+                  className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label
+                  htmlFor="qr-phone"
+                  className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
+                >
+                  Phone number *
+                </label>
+                <input
+                  id="qr-phone"
+                  required
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength={20}
+                  className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label
+                  htmlFor="qr-email"
+                  className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
+                >
+                  Email (optional)
+                </label>
+                <input
+                  id="qr-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  maxLength={200}
+                  className="mt-1 w-full border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="qr-message"
+                  className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand/50"
+                >
+                  A message for us (optional)
+                </label>
+                <textarea
+                  id="qr-message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  maxLength={300}
+                  rows={2}
+                  placeholder="e.g. Wishing you all the best with the project!"
+                  className="mt-1 w-full resize-none border-b border-brand/10 bg-transparent py-2 outline-none focus:border-accent"
+                />
+              </div>
+
+              {error && (
+                <p
+                  role="alert"
+                  className="mb-4 text-sm font-medium text-accent"
+                >
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="
+                  flex w-full items-center justify-center gap-3
+                  rounded-full bg-accent py-4 text-base font-semibold text-white
+                  transition-colors hover:bg-brand disabled:opacity-60
+                "
+              >
+                {loading && <Loader2 className="animate-spin" size={18} />}
+                Send Details on WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
