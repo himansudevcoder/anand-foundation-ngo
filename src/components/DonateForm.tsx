@@ -394,7 +394,8 @@
 
 "use client";
 
-import { useState, type FormEvent } from "react";
+// import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Loader2 } from "lucide-react";
 
 const PRESETS = [500, 1500, 5000, 15000] as const;
@@ -419,17 +420,62 @@ export function DonateForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const waitingForUPIReturn = useRef(false);
+
   const finalAmount = custom ? Number(custom) : amount;
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (
+        document.visibilityState === "visible" &&
+        waitingForUPIReturn.current
+      ) {
+        waitingForUPIReturn.current = false;
+
+        // User has returned from the UPI app
+        setPaymentStarted(true);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // const startUPIPayment = () => {
+  //   setError(null);
+
+  //   if (!finalAmount || finalAmount < 50) {
+  //     setError("Minimum donation is ₹50.");
+  //     return;
+  //   }
+
+  //   // UPI payment URL
+  //   const upiUrl =
+  //     `upi://pay` +
+  //     `?pa=${encodeURIComponent(NGO_UPI_ID)}` +
+  //     `&pn=${encodeURIComponent(NGO_NAME)}` +
+  //     `&am=${encodeURIComponent(finalAmount)}` +
+  //     `&cu=INR` +
+  //     `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
+
+  //   // Try opening UPI app
+  //   window.location.href = upiUrl;
+
+  //   // Show donor form after attempting payment
+  //   setPaymentStarted(true);
+  // };
 
   const startUPIPayment = () => {
     setError(null);
 
-    if (!finalAmount || finalAmount < 50) {
+    if (!finalAmount || finalAmount < 5) {
       setError("Minimum donation is ₹50.");
       return;
     }
 
-    // UPI payment URL
     const upiUrl =
       `upi://pay` +
       `?pa=${encodeURIComponent(NGO_UPI_ID)}` +
@@ -438,11 +484,11 @@ export function DonateForm() {
       `&cu=INR` +
       `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
 
-    // Try opening UPI app
-    window.location.href = upiUrl;
+    // We are now waiting for the user to return from UPI app
+    waitingForUPIReturn.current = true;
 
-    // Show donor form after attempting payment
-    setPaymentStarted(true);
+    // Open PhonePe / Google Pay / Paytm / BHIM etc.
+    window.location.href = upiUrl;
   };
 
   const submitDonationDetails = (e: FormEvent<HTMLFormElement>) => {
@@ -784,7 +830,7 @@ export function DonateForm() {
 
           <button
             type="button"
-            onClick={() => setPaymentStarted(false)}
+            onClick={() => setPaymentStarted(true)}
             className="
               mt-4
               w-full
