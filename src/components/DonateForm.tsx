@@ -482,6 +482,7 @@ export function DonateForm() {
       `&pn=${encodeURIComponent(NGO_NAME)}` +
       `&am=${encodeURIComponent(finalAmount)}` +
       `&cu=INR` +
+      `&tr=${encodeURIComponent(crypto.randomUUID())}` + // Unique transaction reference
       `&tn=${encodeURIComponent("Donation to Anand Charitable Trust")}`;
 
     // We are now waiting for the user to return from UPI app
