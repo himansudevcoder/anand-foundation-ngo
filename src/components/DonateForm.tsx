@@ -402,7 +402,7 @@ const PRESETS = [500, 1500, 5000, 15000] as const;
 
 // IMPORTANT: Replace this with the NGO's actual UPI ID
 const NGO_UPI_ID = "9827852631-2@ybl";
-const NGO_NAME = "Anand Charitable Trust";
+const NGO_NAME = "urbasi naik";
 
 // NGO WhatsApp number WITH country code, without +
 // Example: 919438222888
