@@ -467,8 +467,8 @@ export function DonateForm() {
   const startUPIPayment = () => {
     setError(null);
 
-    if (!finalAmount || finalAmount <= 1) {
-      setError("Minimum donation is ₹2.");
+    if (!finalAmount || finalAmount < 1) {
+      setError("Minimum donation is ₹1.");
       return;
     }
 
