@@ -84,7 +84,7 @@ export function SiteFooter() {
                 href="mailto:anandcharitabletrust22@gmail.com"
                 className="text-sm text-surface/75 transition hover:text-accent"
               >
-                anandcharitabletrust22@gmail.com
+                anandcharitabletrust2020@gmail.com
               </a>
             </div>
           </div>

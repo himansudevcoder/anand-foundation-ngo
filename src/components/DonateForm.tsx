@@ -3,7 +3,7 @@
 import { Mail, Phone, ExternalLink, ShieldCheck } from "lucide-react";
 
 const NGO_NAME = "ANAND CHARITABLE TRUST";
-const CONTACT_EMAIL = "anandcharitabletrust22@gmail.com"; // update with real email
+const CONTACT_EMAIL = "anandcharitabletrust2020@gmail.com"; // update with real email
 const CONTACT_PHONE = "+917903195082";
 const RAZORPAY_PAGE_URL = "https://rzp.io/rzp/YR208Wh";
 
