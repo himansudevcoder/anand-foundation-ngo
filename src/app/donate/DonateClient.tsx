@@ -6,7 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 
 import { PageHeader } from "@/components/PageHeader";
 
-import { DonateForm } from "@/components/DonateForm";
+import { DonatePage } from "@/components/DonateForm";
 
 import { Reveal } from "@/components/Reveal";
 
@@ -81,7 +81,7 @@ Every contribution helps support children, women and communities through educati
           )}
 
           <Reveal>
-            <DonateForm />
+            <DonatePage />
           </Reveal>
         </div>
       </section>
