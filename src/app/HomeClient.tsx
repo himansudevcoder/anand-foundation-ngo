@@ -149,6 +149,7 @@ const partners = [
   "Social Leaders",
   "Supporters",
   "Development Partners",
+  "Movendi",
 ] as const;
 
 export default function HomeClient() {
@@ -369,7 +370,7 @@ export default function HomeClient() {
                     <div className="flex items-center gap-4">
                       <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-brand/10 sm:h-16 sm:w-16">
                         <Image
-                          src={s.img}
+                          src={centrehead}
                           alt={s.name}
                           width={100}
                           height={100}
@@ -434,6 +435,8 @@ export default function HomeClient() {
               } else if (p === "Supporters") {
                 Icon = Heart;
               } else if (p === "Development Partners") {
+                Icon = Handshake;
+              } else if (p === "Movendi") {
                 Icon = Handshake;
               }
 
