@@ -22,7 +22,7 @@ const stories = [
   },
 
   {
-    img: "/images/dental-camp-kids/image1.jpeg",
+    img: "/images/dental-camp-kids/image1.webp",
 
     title: "Dental Camp for Kids",
 
