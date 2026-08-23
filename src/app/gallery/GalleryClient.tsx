@@ -177,7 +177,7 @@ Explore the stories, programmes and community moments that reflect our journey o
 "
       />
 
-      <section className="px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+      <section className="px-4 py-2 sm:px-6 sm:py-4 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <h2 className="mb-6 font-serif text-2xl text-brand sm:mb-10 sm:text-3xl md:text-5xl">

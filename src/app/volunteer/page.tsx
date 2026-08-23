@@ -85,7 +85,7 @@ Our initiatives grow through the support of volunteers. Join us to empower child
       />
 
       {/* ROLES */}
-      <section className="px-6 py-10 lg:px-8">
+      <section className="px-6 py-2 lg:px-8">
         <div
           className="
             mx-auto
