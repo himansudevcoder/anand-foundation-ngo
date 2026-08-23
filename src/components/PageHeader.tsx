@@ -42,7 +42,7 @@ export function PageHeader({ eyebrow, title, intro, image }: PageHeaderProps) {
         {intro && (
           <Reveal delay={0.12}>
             <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-brand/70">
-              {intro}
+              {intro.trim()}
             </p>
           </Reveal>
         )}
